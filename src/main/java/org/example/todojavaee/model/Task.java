@@ -8,7 +8,7 @@ public class Task {
     private String title;
     private String description;
     private boolean  completed;
-    private LocalDateTime completedAt;
+    private LocalDateTime createdAt;
 
     public Task() {
     }
@@ -45,12 +45,12 @@ public class Task {
         this.completed = completed;
     }
 
-    public LocalDateTime getCompletedAt() {
-        return completedAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCompletedAt(LocalDateTime completedAt) {
-        this.completedAt = completedAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Task(int id, String title, String description, boolean completed, LocalDateTime completedAt) {
@@ -58,7 +58,7 @@ public class Task {
         this.title = title;
         this.description = description;
         this.completed = completed;
-        this.completedAt = completedAt;
+        this.createdAt = completedAt;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", completed=" + completed +
-                ", completedAt=" + completedAt +
+                ", completedAt=" + createdAt +
                 '}';
     }
 
