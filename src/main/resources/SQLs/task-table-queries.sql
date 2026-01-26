@@ -16,4 +16,4 @@ INSERT INTO tasks (title, description, completed) VALUES
 
 drop table tasks;
 
-select * from tasks;
+select * from tasks order by created_at desc, id asc;

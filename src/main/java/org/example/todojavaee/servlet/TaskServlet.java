@@ -29,24 +29,42 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doGet(req, resp);
-        //log("-------Inside TaskServlet doGet method--------");
 
         String action = req.getParameter("action");
         if (action == null) action = "list";
-//        if(action != null && action.equalsIgnoreCase("list")) {
-//            listTasks(req, resp);
-//        }
-//
-//        if(action == null) {
-//            listTasks(req, resp);
-//        }
 
         switch (action) {
             case "list" -> listTasks(req, resp);
+            case "toggle" -> toogleTask(req, resp);
+            case "delete" -> deleteTask(req, resp);
+            case "add", "update" -> showTaskForm(req, resp);
             default -> listTasks(req, resp);
         }
 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if (action.equalsIgnoreCase("add")) {
+            saveTask(req, resp);
+        } else if (action.equalsIgnoreCase("update")) {
+            updateTask(req, resp);
+        }
+    }
+
+    private void showTaskForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if (action.equalsIgnoreCase("update")) {
+            Integer id = Integer.valueOf(req.getParameter("id"));
+            try {
+                Task task = taskDao.getTaskById(id);
+                req.setAttribute("task", task);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        req.getRequestDispatcher("/WEB-INF/views/task-form.jsp").forward(req, resp);
     }
 
     private void listTasks(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -61,6 +79,62 @@ public class TaskServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/task-list.jsp").forward(req, resp);
     }
 
+    private void saveTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String title = req.getParameter("title");
+        String description = req.getParameter("description");
+        Boolean completed = req.getParameter("completed") != null ? true : false;
+
+        Task task = new Task();
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setCompleted(completed);
+        try {
+            taskDao.addTask(task);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        resp.sendRedirect(req.getContextPath() + "/tasks");
+    }
+
+    private void updateTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Inside updateTask");
+        Integer id = Integer.valueOf(req.getParameter("id"));
+        String title = req.getParameter("title");
+        String description = req.getParameter("description");
+        Boolean completed = req.getParameter("completed") != null ? true : false;
+
+        Task task = new Task();
+        task.setId(id);
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setCompleted(completed);
+        try {
+            taskDao.updateTask(task);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        resp.sendRedirect(req.getContextPath() + "/tasks");
+    }
+
+    private void toogleTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        try {
+            taskDao.toggleTask(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        resp.sendRedirect(req.getContextPath() + "/tasks");
+    }
+
+    private void deleteTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        try {
+            taskDao.deleteTask(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        resp.sendRedirect(req.getContextPath() + "/tasks");
+    }
 
 
 }

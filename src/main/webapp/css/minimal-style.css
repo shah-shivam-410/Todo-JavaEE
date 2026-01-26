@@ -5,9 +5,79 @@
 /*    padding: 10px*/
 /*}*/
 
+* {
+    font-family: Calibri;
+}
+
+.container {
+    display: grid;
+    place-items: center; /* Shorthand for centering both axes */
+    height: 200px;          /* Example height for visibility */
+}
+
+th {
+    color: white;
+    background-color: navy;
+}
+
+td {
+    color: black;
+    background-color: white;
+}
+
 td, th {
-    border: 2px solid #7a0096;
+    /*border: 2px solid #7a0096;*/
+    border: 2px solid navy;
     padding: 5px;
     align-content: center;
     text-align: center;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    row-gap: 5px;
+    column-gap: 5px;
+}
+
+.form-group {
+    display: contents; /* key line */
+}
+
+label {
+    align-self: center;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* checkbox row */
+.form-group label:has(input[type="checkbox"]) {
+    grid-column: 2;
+}
+
+/* buttons */
+.form-action {
+    grid-column: 2;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 6px 14px;
+    cursor: pointer;
+}
+
+.btn {
+    padding: 6px 14px;
+    cursor: pointer;
+    appearance: button;
 }

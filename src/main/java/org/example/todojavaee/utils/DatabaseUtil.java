@@ -26,6 +26,8 @@ public class DatabaseUtil {
         if(dbConn == null || dbConn.isClosed()) {
             synchronized (lock) {
                 dbConn = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+                dbConn.setAutoCommit(false);
+
             }
         }
         return dbConn;
