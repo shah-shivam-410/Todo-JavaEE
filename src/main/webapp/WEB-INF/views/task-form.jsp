@@ -15,7 +15,7 @@
     <h1>📝 Todo Application</h1>
     <br>
     <br>
-    <h3>✍🏻 Task Form</h3>
+    <h2>✍🏻 Task Form</h2>
     <br>
     
     <form method="post" action="tasks">

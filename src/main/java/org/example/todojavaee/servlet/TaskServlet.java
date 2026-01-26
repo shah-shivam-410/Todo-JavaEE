@@ -97,7 +97,6 @@ public class TaskServlet extends HttpServlet {
     }
 
     private void updateTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Inside updateTask");
         Integer id = Integer.valueOf(req.getParameter("id"));
         String title = req.getParameter("title");
         String description = req.getParameter("description");
