@@ -77,6 +77,8 @@ textarea {
 button {
     padding: 6px 14px;
     cursor: pointer;
+    color: navy;
+    font-weight: bold;
 }
 
 .btn {

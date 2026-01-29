@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.todojavaee.dao.TaskDao;
+import org.example.todojavaee.dao.TaskJPADao;
 import org.example.todojavaee.model.Task;
 
 import java.io.IOException;
@@ -18,13 +19,14 @@ import java.util.Map;
 @WebServlet("/tasks")
 public class TaskServlet extends HttpServlet {
 
-    private TaskDao taskDao;
+    // private TaskDao taskDao;
+    private TaskJPADao taskDao;
 
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        taskDao = new TaskDao();
+        taskDao = new TaskJPADao();
     }
 
     @Override

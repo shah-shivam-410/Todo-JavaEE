@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +44,7 @@
                                     <button>${task.completed ? "✅" : "⭕"}</button>
                                 </a>
                             </td>
-                            <td>${task.createdAt}</td>
+                            <td>${task.formattedCreatedAt}</td>
                             <td>
                                 <a href="${pageContext.request.contextPath}/tasks?action=update&id=${task.id}">
                                     <button>Edit</button>

@@ -1,13 +1,23 @@
 package org.example.todojavaee.model;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@Entity
+@Table(name = "tasks")
 public class Task {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String title;
     private String description;
     private boolean  completed;
+
+    @Column(name = "createdat", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     public Task() {
@@ -61,6 +71,13 @@ public class Task {
         this.createdAt = completedAt;
     }
 
+    @PrePersist
+    protected void onCreate() {
+        if(createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -70,6 +87,14 @@ public class Task {
                 ", completed=" + completed +
                 ", completedAt=" + createdAt +
                 '}';
+    }
+
+    public String getFormattedCreatedAt() {
+        if (createdAt != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd-MMM-yyyy");
+            return createdAt.format(formatter);
+        }
+        return "";
     }
 
 }
