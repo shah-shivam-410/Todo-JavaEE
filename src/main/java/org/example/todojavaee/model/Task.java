@@ -7,18 +7,39 @@ import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "tasks")
+//@NamedEntityGraph(
+//        name = "Task.user",
+//        attributeNodes = @NamedAttributeNode("user")
+//)
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasks_entity_seq")
+    @SequenceGenerator(
+            name = "tasks_entity_seq",
+            sequenceName = "tasks_entity_id_seq",
+            allocationSize = 50
+    )
     private int id;
 
     private String title;
     private String description;
-    private boolean  completed;
+    private boolean completed;
 
     @Column(name = "createdat", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Task() {
     }
@@ -73,20 +94,14 @@ public class Task {
 
     @PrePersist
     protected void onCreate() {
-        if(createdAt == null) {
+        if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", completed=" + completed +
-                ", completedAt=" + createdAt +
-                '}';
+        return "Task{" + "id=" + id + ", title='" + title + '\'' + ", description='" + description + '\'' + ", completed=" + completed + ", completedAt=" + createdAt + '}';
     }
 
     public String getFormattedCreatedAt() {

@@ -86,3 +86,20 @@ button {
     cursor: pointer;
     appearance: button;
 }
+
+.userinfo {
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    display: inline;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    background-color: brown;
+}
+.logout {
+    margin: 2px;
+    padding: 2px;
+    color: brown;
+    background-color: white;
+}

@@ -14,7 +14,11 @@
 <body>
 <div class="container">
     <h1>📝 Todo Application</h1>
-    
+    <div class="userinfo">
+        <span>Welcome, <strong>${userName}</strong></span>
+        <a href="${pageContext.request.contextPath}/logout"><button class="logout">Logout</button></a>
+    </div>
+    <br>
     <div class="add-task">
         <a href="${pageContext.request.contextPath}/tasks?action=add">
             <button>➕ Add New Task</button>

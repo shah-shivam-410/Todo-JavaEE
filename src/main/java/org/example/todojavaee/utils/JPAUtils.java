@@ -9,7 +9,7 @@ public class JPAUtils {
 
     static {
         entityManagerFactory = Persistence.createEntityManagerFactory("TodoPU");
-        System.out.println("entityManagerFactory created successfully...");
+        //System.out.println("entityManagerFactory created successfully...");
     }
 
     public static EntityManagerFactory getEntityManagerFactory() {

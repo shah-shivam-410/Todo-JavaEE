@@ -1,0 +1,10 @@
+{
+  "realm": "todo-realm",
+  "auth-server-url": "http://localhost:8180/",
+  "ssl-required": "external",
+  "resource": "todo-app",
+  "credentials": {
+    "secret": "rSIfAXMype2ZFUGMNWRUFZIxKmKcDNPy"
+  },
+  "confidential-port": 0
+}

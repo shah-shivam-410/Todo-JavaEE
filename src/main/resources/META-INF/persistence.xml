@@ -8,6 +8,7 @@
 
         <!-- Entity classes -->
         <class>org.example.todojavaee.model.Task</class>
+        <class>org.example.todojavaee.model.User</class>
 
         <properties>
 
@@ -19,8 +20,8 @@
 
             <!-- Hibernate properties -->
             <!--<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>-->
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
 
             <!-- Connection pool -->

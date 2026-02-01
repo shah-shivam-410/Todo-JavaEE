@@ -6,22 +6,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.todojavaee.dao.TaskDao;
+import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.todojavaee.dao.TaskJPADao;
 import org.example.todojavaee.model.Task;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet("/tasks")
 public class TaskServlet extends HttpServlet {
 
+    private static final Logger log = LogManager.getLogger(TaskServlet.class);
+
     // private TaskDao taskDao;
     private TaskJPADao taskDao;
-
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -31,7 +32,7 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        log.info("Inside TaskServlet - doGet");
         String action = req.getParameter("action");
         if (action == null) action = "list";
 
@@ -71,17 +72,24 @@ public class TaskServlet extends HttpServlet {
 
     private void listTasks(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Task> tasks = null;
+        HttpSession session = req.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+        String userName = (String) session.getAttribute("userName");
         try {
-            tasks = taskDao.getAllTask();
+            tasks = taskDao.getAllTaskForUser(userId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        req.setAttribute("pageTitle", "Todo List");
+
+        req.setAttribute("userName", userName);
         req.setAttribute("taskList", tasks);
         req.getRequestDispatcher("/WEB-INF/views/task-list.jsp").forward(req, resp);
     }
 
     private void saveTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+
         String title = req.getParameter("title");
         String description = req.getParameter("description");
         Boolean completed = req.getParameter("completed") != null ? true : false;
@@ -91,7 +99,7 @@ public class TaskServlet extends HttpServlet {
         task.setDescription(description);
         task.setCompleted(completed);
         try {
-            taskDao.addTask(task);
+            taskDao.addTask(task, userId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -99,6 +107,9 @@ public class TaskServlet extends HttpServlet {
     }
 
     private void updateTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+
         Integer id = Integer.valueOf(req.getParameter("id"));
         String title = req.getParameter("title");
         String description = req.getParameter("description");
@@ -110,7 +121,7 @@ public class TaskServlet extends HttpServlet {
         task.setDescription(description);
         task.setCompleted(completed);
         try {
-            taskDao.updateTask(task);
+            taskDao.updateTask(task, userId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -118,9 +129,11 @@ public class TaskServlet extends HttpServlet {
     }
 
     private void toogleTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
         int id = Integer.parseInt(req.getParameter("id"));
         try {
-            taskDao.toggleTask(id);
+            taskDao.toggleTask(id, userId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -128,9 +141,11 @@ public class TaskServlet extends HttpServlet {
     }
 
     private void deleteTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
         int id = Integer.parseInt(req.getParameter("id"));
         try {
-            taskDao.deleteTask(id);
+            taskDao.deleteTask(id, userId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
